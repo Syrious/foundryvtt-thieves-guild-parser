@@ -1,14 +1,15 @@
 <script lang="ts">
 
-   import {mainParse} from "./MainNpcParser";
-   import {testFigher} from "./TestData";
-   import {parse} from "@typhonjs-fvtt/runtime/data/format/jsonc";
+   import {mainParse} from "./NpcParser";
+   import {testFigher} from "./TestNpc";
 
    let textContent: string = '';
 
+   let generateActor = false;
+   let generateJournal = false;
+
    function handleSubmit() {
-      // console.log('Text submitted:', textContent);
-      if(textContent.length === 0){
+      if (textContent.length === 0) {
          textContent = testFigher;
       }
 
@@ -17,7 +18,7 @@
       createActor(parsedData);
    }
 
-   function getSkills(skills){
+   function getProficientSkills(skills) {
       const jsonObject = {};
 
 
@@ -35,7 +36,7 @@
          name: parsedData.name,
          type: "npc",
          img: "icons/svg/mystery-man.svg",
-         system:{
+         system: {
             abilities: parsedData.abilities,
             attributes: {
                ac: {
@@ -46,21 +47,43 @@
                   value: parsedData.hp
                }
             },
-            skills: getSkills(parsedData.skills),
-            details:{
+            skills: getProficientSkills(parsedData.skills),
+            details: {
                bio: await TextEditor.enrichHTML(parsedData.description + "<br> <br>" + parsedData.personality)
             }
          }
       }
 
-      console.log(actorData)
-
-      let newActor = await Actor.create(actorData);
-      return newActor;
+      return await Actor.create(actorData);
    }
 </script>
 
-<style>
+<div>
+   <textarea bind:value={textContent} placeholder="Enter your text here..."></textarea>
+   <div class="checkboxes">
+      <label>
+         <input type="checkbox" bind:checked={generateActor}>
+         <span class="checkbox-label">Generate Actor</span>
+      </label>
+      <label>
+         <input type="checkbox" bind:checked={generateJournal}>
+         <span class="checkbox-label">Generate Journal</span>
+      </label>
+   </div>
+   <button on:click={handleSubmit}>Submit</button>
+</div>
+
+<style lang="scss">
+   .checkboxes {
+      display: flex;
+   }
+
+   label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px; /* optional spacing between checkboxes */
+   }
+
    textarea {
       width: 100%;
       height: 200px;
@@ -71,8 +94,3 @@
       margin-top: 10px;
    }
 </style>
-
-<div>
-   <textarea bind:value={textContent} placeholder="Enter your text here..."></textarea>
-   <button on:click={handleSubmit}>Submit</button>
-</div>

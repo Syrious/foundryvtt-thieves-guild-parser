@@ -80,11 +80,11 @@ function getAbilities($: cheerio.CheerioAPI) {
 }
 
 function getDescription($: cheerio.CheerioAPI) {
-  return $('.flexboxes.dets .flexbox').eq(0).find('p').eq(0).text();
+  return $('.flexboxes.dets .flexbox').eq(0).find('p').eq(0).html();
 }
 
 function getPersonality($: cheerio.CheerioAPI) {
-  return $('.flexboxes.dets .flexbox').eq(0).find('p').eq(1).text();
+  return $('.flexboxes.dets .flexbox').eq(0).find('p').eq(1).html();
 }
 
 function getHp($: cheerio.CheerioAPI) {
