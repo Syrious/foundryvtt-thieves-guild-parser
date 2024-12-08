@@ -1,7 +1,7 @@
-<script>
+<script lang="ts">
    import { ApplicationShell }   from '#runtime/svelte/component/application';
 
-   export let elementRoot;
+   export let elementRoot: any;
 </script>
 
 <!-- This is necessary for Svelte to generate accessors TRL can access for `elementRoot` -->

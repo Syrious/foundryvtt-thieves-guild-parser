@@ -1,11 +1,11 @@
 {
-  "description": "Provides a bare-bones Foundry module template repo to get set up with using the TyphonJS Runtime Library and Svelte with ES Modules.",
-  "license": "MIT",
+  "description": "",
+  "license": "",
   "private": true,
   "type": "module",
-  "author": "Michael Leahy <support@typhonjs.io> (https://github.com/typhonrt)",
+  "author": "Syrious",
   "contributors": [
-    "Michael Leahy <support@typhonjs.io> (https://github.com/typhonrt)"
+    "Syrious"
   ],
   "imports": {
     "#runtime/*": "@typhonjs-fvtt/runtime/*",
@@ -19,6 +19,7 @@
   "devDependencies": {
     "@typhonjs-config/eslint-config": "^0.6.0",
     "@typhonjs-fvtt/eslint-config-foundry.js": "^0.8.0",
+    "typescript": "^5.4.5",
     "eslint": "^8"
   },
   "browserslist": [">5%", "not IE 11"],

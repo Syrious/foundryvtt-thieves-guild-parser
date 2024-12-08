@@ -1,17 +1,21 @@
 {
-  "id": "template-svelte-esm",
-  "title": "Template Svelte (ESM)",
-  "description": "Provides a bare-bones Foundry module template repo to get set up with using the TyphonJS Runtime Library and Svelte with ES Modules.",
-  "version": "0.0.0",
+  "id": "thieves-guild-parser",
+  "title": "Thieves Guild Parser",
+  "description": "",
+  "version": "0.0.1",
   "authors": [
     {
-      "name": "Michael Leahy (TyphonJS) - MLeahy#4299",
-      "url": "https://www.typhonjs.io",
-      "discord": "MLeahy#4299"
+      "name": "Syrious",
+      "discord": "syrious_",
+      "flags": {
+        "patreon": "SyriousWorkshop",
+        "github": "Syrious",
+        "ko-fi": "syrious"
+      }
     }
   ],
   "compatibility": {
-    "minimum": "10",
+    "minimum": "11",
     "verified": "12"
   },
   "esmodules": [
@@ -33,14 +37,9 @@
       "path": "lang/en.json"
     }
   ],
-  "socket": false,
-  "url": "https://github.com/typhonjs-fvtt-demo/template-svelte-esm",
-  "readme": "https://github.com/typhonjs-fvtt-demo/template-svelte-esm/blob/master/README.md",
-  "bugs": "https://github.com/typhonjs-fvtt-demo/template-svelte-esm/issues",
-  "changelog": "https://github.com/typhonjs-fvtt-demo/template-svelte-esm/releases/latest/",
-  "manifest": "https://github.com/typhonjs-fvtt-demo/template-svelte-esm/releases/latest/download/module.json",
-  "download": "https://github.com/typhonjs-fvtt-demo/template-svelte-esm/releases/download/0.0.0/module.zip",
-  "protected": false,
+  "url": "",
+  "manifest": "${module-endpoint}",
+  "download": "${download-endpoint}",
   "coreTranslation": false,
   "library": false
 }

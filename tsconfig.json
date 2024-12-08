@@ -2,7 +2,9 @@
   "compilerOptions" : {
     "lib": ["ES2022", "DOM"],
     "module": "ES2022",
-    "moduleResolution" : "bundler"
+    "moduleResolution" : "bundler",
+    "verbatimModuleSyntax": true
   },
+  "include": ["src"],
   "exclude": ["node_modules"]
 }
