@@ -8,14 +8,21 @@
    let generateActor = false;
    let generateJournal = false;
 
-   function handleSubmit() {
+   async function handleSubmit() {
       if (textContent.length === 0) {
          textContent = testFigher;
       }
 
       const parsedData = mainParse(textContent);
 
-      createActor(parsedData);
+      let actorUUID;
+      if (generateActor) {
+         actorUUID = await createActor(parsedData);
+      }
+
+      if (generateJournal) {
+         await createJournal(parsedData, actorUUID);
+      }
    }
 
    function getProficientSkills(skills) {
@@ -31,7 +38,18 @@
       return jsonObject;
    }
 
-   async function createActor(parsedData) {
+   async function createActor(parsedData: {
+      abilities: { [p: string]: { value: number } };
+      skills: string[];
+      ac: number;
+      passivePerception: number;
+      personality: any;
+      raceClassAlignment: { profession: any; gender: any; race: any; alignment: any };
+      name: any;
+      hp: number;
+      profBonus: number;
+      description: any
+   }) {
       const actorData = {
          name: parsedData.name,
          type: "npc",
@@ -54,7 +72,66 @@
          }
       }
 
-      return await Actor.create(actorData);
+      let actor = await Actor.create(actorData);
+      return actor.id;
+   }
+
+   async function createJournal(actorData: any, actorUUID: string) {
+      console.log("UUID", actorUUID);
+
+      let pageData = {
+         name: actorData.name,
+         flags: {
+            "monks-enhanced-journal": {
+               pagetype: "person",
+               img: "modules/monks-enhanced-journal/assets/person.png"
+            }
+         },
+         pages: [
+            {
+               type: "text",
+               name: actorData.name,
+               flags: {
+                  "monks-enhanced-journal": {
+                     type: "person"
+                  }
+               },
+               role: "",
+               location: "",
+               attributes: {
+                  ancestry: "",
+                  age: "",
+                  eyes: "",
+                  hair: "",
+                  voice: "",
+                  traits: "",
+                  ideals: "",
+                  bonds: "",
+                  flaws: ""
+               },
+               text: {
+                  format: 1,
+                  content: actorData.description + "<br> <br>" + actorData.personality
+               },
+               src: null,
+               sort: 0,
+            }
+         ],
+         folder: null,
+      };
+
+      if (actorUUID) {
+         pageData.pages[0].flags["monks-enhanced-journal"].actor = {
+            id: actorUUID,
+            uuid: "Actor." + actorUUID,
+            img: "icons/svg/mystery-man.svg",
+            name: actorData.name,
+            quantity: "1"
+         }
+
+      }
+
+      return await JournalEntry.create(pageData)
    }
 </script>
 
