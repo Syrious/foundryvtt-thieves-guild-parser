@@ -13,7 +13,7 @@ export default class BasicApplication extends SvelteApplication
    static get defaultOptions()
    {
       return foundry.utils.mergeObject(super.defaultOptions, {
-         title: 'TemplateESM.title',  // Automatically localized from `lang/en.json`.
+         title: 'Thieves Guild NPC Parser',  // Automatically localized from `lang/en.json`.
          width: 500,
 
          svelte: {

@@ -136,7 +136,7 @@
 </script>
 
 <div>
-   <textarea bind:value={textContent} placeholder="Enter your text here..."></textarea>
+   <textarea bind:value={textContent} placeholder="Go to https://www.thievesguild.cc/npc/index.php generate a NPC. Then open browser console and copy the element with class 'page-border npc'. Paste it here an generate."></textarea>
    <div class="checkboxes">
       <label>
          <input type="checkbox" bind:checked={generateActor}>
@@ -146,6 +146,8 @@
          <input type="checkbox" bind:checked={generateJournal}>
          <span class="checkbox-label">Generate Journal</span>
       </label>
+
+      <a href="https://www.thievesguild.cc/npc/index.php">Open Thieves Guild</a>
    </div>
    <button on:click={handleSubmit}>Submit</button>
 </div>
@@ -153,9 +155,10 @@
 <style lang="scss">
    .checkboxes {
       display: flex;
+      gap: 1rem
    }
 
-   label {
+   label, a {
       display: flex;
       align-items: center;
       margin-bottom: 8px; /* optional spacing between checkboxes */
