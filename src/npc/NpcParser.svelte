@@ -1,22 +1,61 @@
 <script lang="ts">
 
    import {mainParse} from "./MainNpcParser";
+   import {testFigher} from "./TestData";
+   import {parse} from "@typhonjs-fvtt/runtime/data/format/jsonc";
 
    let textContent: string = '';
 
    function handleSubmit() {
       // console.log('Text submitted:', textContent);
-      mainParse(textContent)
-      // createAiActor();
+      if(textContent.length === 0){
+         textContent = testFigher;
+      }
+
+      const parsedData = mainParse(textContent);
+
+      createActor(parsedData);
    }
 
-   async function createAiActor() {
-      let newActor = await Actor.create({
-         name: "New Test Actor",
-         type: "npc",
-         img: "icons/svg/mystery-man.svg"
+   function getSkills(skills){
+      const jsonObject = {};
+
+
+      skills.forEach(key => {
+         jsonObject[key] = {
+            "proficient": 1
+         };
       });
 
+      return jsonObject;
+   }
+
+   async function createActor(parsedData) {
+      const actorData = {
+         name: parsedData.name,
+         type: "npc",
+         img: "icons/svg/mystery-man.svg",
+         system:{
+            abilities: parsedData.abilities,
+            attributes: {
+               ac: {
+                  baseFormula: parsedData.ac
+               },
+               hp: {
+                  baseMax: parsedData.hp,
+                  value: parsedData.hp
+               }
+            },
+            skills: getSkills(parsedData.skills),
+            details:{
+               bio: await TextEditor.enrichHTML(parsedData.description + "<br> <br>" + parsedData.personality)
+            }
+         }
+      }
+
+      console.log(actorData)
+
+      let newActor = await Actor.create(actorData);
       return newActor;
    }
 </script>

@@ -1,6 +1,5 @@
 import * as cheerio from 'cheerio';
 
-
 export function mainParse(content: string) {
   const $ = cheerio.load(content);
   // title
@@ -12,7 +11,6 @@ export function mainParse(content: string) {
   // abilities
   const abilities = getAbilities($);
 
-
   const description = getDescription($);
   const personality = getPersonality($);
   const hp = getHp($);
@@ -20,9 +18,20 @@ export function mainParse(content: string) {
   const profBonus = getProfBonus($);
   const passivePerception = getPassivePerception($);
 
-  const skills = getSkills($);
-  // console.log(passivePerception)
-  // description, personality, other stats and skills
+  const skills = getSkillProficiencies($);
+
+  return {
+    name,
+    raceClassAlignment,
+    abilities,
+    description,
+    personality,
+    hp,
+    ac,
+    profBonus,
+    passivePerception,
+    skills
+  }
 }
 
 function getName($: cheerio.CheerioAPI) {
@@ -102,23 +111,79 @@ function getPassivePerception($: cheerio.CheerioAPI) {
   return profText ? parseInt(profText[1], 10) : null;
 }
 
-function getSkills($: cheerio.CheerioAPI){
+function getSkillProficiencies($: cheerio.CheerioAPI) {
+  // Initialize an array to store skill names
+  const proficientSkills: string[] = [];
+
+  // Select all `.skillslist` elements
+  $('.skillslist').each((index, element) => {
+    // Iterate through each <br>-separated line in the element
+    $(element).html()?.split(/<br>/).forEach(line => {
+      // Check if the line includes `<sup>★</sup>`
+      if (/:\s*<sup>★<\/sup>/.test(line)) {
+        // Extract the skill name before the colon
+        const skillName = line.split(':')[0].trim();
+        if (skillName) {
+          proficientSkills.push(skillMapping[skillName]);
+        }
+      }
+    });
+  });
+
+  return proficientSkills;
+}
+
+function getSkills($: cheerio.CheerioAPI, abilities) {
   $('.skillslist').each((index, element) => {
     const skills = $(element).html().split('<br>').filter(skill => skill.trim() !== '');
     skills.forEach(skill => {
       const [name, value] = skill.split(':').map(part => part.trim());
       const key = skillMapping[name];
       if (key) {
-        getSkill(key, value);
-      }else{
+        getSkill(key, parseInt(value), abilities);
+      } else {
         console.warn("not found", key);
       }
     });
   });
 }
 
-function getSkill(key, value) {
-  console.log(`Skill key: ${key}`);
+function getSkill(key, value, abilities) {
+  const correspondingAbility = skillToAbility[key];
+  if (correspondingAbility) {
+    const modifier = Math.floor((abilities[correspondingAbility].value - 10) / 2)
+
+    if (modifier === value) {
+      console.log("Not proficient in", key);
+    } else {
+      console.log(`Proficient in ${key}: ${value} / ${modifier}`);
+    }
+  } else {
+    console.warn("Skill-Ability missing", key);
+  }
+}
+
+const skillToAbility = {
+  "acr": "dex",
+  "ani": "wis",
+  "arc": "int",
+  "ath": "str",
+  "cul": "int",
+  "dec": "cha",
+  "eng": "int",
+  "his": "int",
+  "ins": "wis",
+  "itm": "cha",
+  "inv": "int",
+  "med": "wis",
+  "nat": "int",
+  "prc": "wis",
+  "prf": "cha",
+  "per": "cha",
+  "rel": "int",
+  "slt": "dex",
+  "ste": "dex",
+  "sur": "wis"
 }
 
 const skillMapping = {
