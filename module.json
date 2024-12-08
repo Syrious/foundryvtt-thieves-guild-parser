@@ -39,7 +39,5 @@
   ],
   "url": "",
   "manifest": "${module-endpoint}",
-  "download": "${download-endpoint}",
-  "coreTranslation": false,
-  "library": false
+  "download": "${download-endpoint}"
 }

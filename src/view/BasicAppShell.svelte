@@ -1,5 +1,6 @@
 <script lang="ts">
    import { ApplicationShell }   from '#runtime/svelte/component/application';
+   import NpcParser from "../npc/NpcParser.svelte";
 
    export let elementRoot: any;
 </script>
@@ -11,7 +12,7 @@
 <!-- ApplicationShell exports `elementRoot` which is the outer application shell element -->
 <ApplicationShell bind:elementRoot>
    <main>
-      <h1>Basic application</h1>
+      <NpcParser/>
    </main>
 </ApplicationShell>
 
@@ -22,3 +23,5 @@
       flex-direction: column;
    }
 </style>
+
+
